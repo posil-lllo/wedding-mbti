@@ -3,7 +3,7 @@ const $ = (id) => document.getElementById(id);
 
 let gender = "여자";
 let answers = [];
-let result = null;
+let resultKey = null;
 
 function show(id) {
   for (const s of document.querySelectorAll(".screen")) s.hidden = s.id !== id;
@@ -59,7 +59,7 @@ function renderResult() {
   const styleAnswers = answers.slice(VALUE_QUESTIONS.length);
   const { key, value, valuePercent, stylePercent } = decideCharacter(valueAnswers, styleAnswers, { VALUE_QUESTIONS, STYLE_QUESTIONS });
   const c = CHARACTERS[key];
-  result = c;
+  resultKey = key;
 
   const img = $("char-img");
   img.hidden = !c.image;
@@ -114,17 +114,21 @@ const hasKakao = typeof Kakao !== "undefined";
 if (hasKakao && !Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
 $("share").hidden = !hasKakao;
 $("share").onclick = () => {
+  const c = CHARACTERS[resultKey];
   const home = new URL(".", location.href).href;
-  const link = { mobileWebUrl: home, webUrl: home };
+  const detail = `${home}characters.html?c=${resultKey}&g=${encodeURIComponent(gender)}`;
   Kakao.Share.sendDefault({
     objectType: "feed",
     content: {
-      title: `나의 결혼 준비 캐릭터는 ${result.name}`,
-      description: result.intro,
-      imageUrl: new URL(encodeURI(`서있는모습/${result.image}-${gender}.png`), location.href).href,
-      link,
+      title: c.name,
+      description: c.line,
+      imageUrl: new URL(encodeURI(`서있는모습/${c.image}-${gender}.png`), location.href).href,
+      link: { mobileWebUrl: detail, webUrl: detail },
     },
-    buttons: [{ title: "나도 테스트하기", link }],
+    buttons: [
+      { title: "캐릭터 보기", link: { mobileWebUrl: detail, webUrl: detail } },
+      { title: "나도 테스트하기", link: { mobileWebUrl: home, webUrl: home } },
+    ],
   });
 };
 $("restart").onclick = () => { answers = []; clearSaved(); show("start"); };
