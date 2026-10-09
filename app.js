@@ -10,7 +10,33 @@ function show(id) {
   window.scrollTo(0, 0);
 }
 
+// 새로고침해도 진행 상태를 이어 가도록 탭 단위로 저장한다.
+const STORAGE_KEY = "wedding-test";
+
+function save() {
+  try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ gender, answers })); } catch {}
+}
+
+function clearSaved() {
+  try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
+}
+
+function restore() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY));
+    const isValid = ["여자", "남자"].includes(saved?.gender) && Array.isArray(saved.answers)
+      && saved.answers.length <= QUESTIONS.length
+      && saved.answers.every((n, i) => Number.isInteger(n) && n >= 0 && n < QUESTIONS[i].options.length);
+    if (!isValid) return false;
+    ({ gender, answers } = saved);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function renderQuestion() {
+  save();
   const i = answers.length;
   if (i === QUESTIONS.length) return renderResult();
   const { q, options } = QUESTIONS[i];
@@ -101,4 +127,5 @@ $("share").onclick = () => {
     buttons: [{ title: "나도 테스트하기", link }],
   });
 };
-$("restart").onclick = () => { answers = []; show("start"); };
+$("restart").onclick = () => { answers = []; clearSaved(); show("start"); };
+if (restore()) renderQuestion();
