@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>캐릭터 모아 보기</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #app { max-width: 720px; }
+    .pair { margin-bottom: 32px; }
+    .pair h2 { min-height: 0; margin: 0 0 12px; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .cols .frame { margin: 0 0 6px; max-width: none; }
+    .cols p { margin: 0; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main id="app" class="screen">
+    <h1>결혼 준비 캐릭터</h1>
+    <div id="list"></div>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    document.getElementById("list").replaceChildren(...Object.values(CHARACTERS).map((c) => {
+      const pair = document.createElement("section");
+      pair.className = "pair";
+      const name = document.createElement("h2");
+      name.textContent = c.name;
+      const cols = document.createElement("div");
+      cols.className = "cols";
+      cols.append(...[["여자", "신부"], ["남자", "신랑"]].map(([file, label]) => {
+        const cell = document.createElement("div");
+        const frame = document.createElement("div");
+        frame.className = "frame";
+        const img = document.createElement("img");
+        img.src = encodeURI(`서있는모습/${c.image}-${file}.png`);
+        img.alt = `${c.name} ${label}`;
+        frame.append(img);
+        const cap = document.createElement("p");
+        cap.textContent = label;
+        cell.append(frame, cap);
+        return cell;
+      }));
+      pair.append(name, cols);
+      return pair;
+    }));
+  </script>
+</body>
+</html>
