@@ -50,7 +50,9 @@ h2 { white-space: pre-line; font-size: 21px; line-height: 1.45; margin: 8px 0 28
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
-.choice:hover, .choice:focus-visible { background: var(--pink-soft); border-color: var(--pink); outline: none; }
+/* 터치 기기는 누른 자리에 hover 가 남으므로 마우스일 때만 적용한다 */
+@media (hover: hover) { .choice:hover { background: var(--pink-soft); border-color: var(--pink); } }
+.choice:focus-visible, .choice.selected { background: var(--pink-soft); border-color: var(--pink); outline: none; }
 
 .ghost {
   margin-top: 24px;
