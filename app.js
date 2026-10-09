@@ -120,7 +120,7 @@ $("share").onclick = () => {
   Kakao.Share.sendDefault({
     objectType: "feed",
     content: {
-      title: c.name,
+      title: `나의 결혼준비 유형은? ${c.name}`,
       description: c.line,
       imageUrl: new URL(encodeURI(`서있는모습/${c.image}-${gender}.png`), location.href).href,
       link: { mobileWebUrl: detail, webUrl: detail },
