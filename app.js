@@ -3,6 +3,7 @@ const $ = (id) => document.getElementById(id);
 
 let gender = "여자";
 let answers = [];
+let result = null;
 
 function show(id) {
   for (const s of document.querySelectorAll(".screen")) s.hidden = s.id !== id;
@@ -32,6 +33,7 @@ function renderResult() {
   const styleAnswers = answers.slice(VALUE_QUESTIONS.length);
   const { key, value, valuePercent, stylePercent } = decideCharacter(valueAnswers, styleAnswers, { VALUE_QUESTIONS, STYLE_QUESTIONS });
   const c = CHARACTERS[key];
+  result = c;
 
   const img = $("char-img");
   img.hidden = !c.image;
@@ -80,4 +82,23 @@ for (const b of document.querySelectorAll("[data-gender]")) {
   b.onclick = () => { gender = b.dataset.gender; answers = []; renderQuestion(); };
 }
 $("back").onclick = () => { answers.pop(); renderQuestion(); };
+// 카카오 JavaScript 키는 등록한 도메인에서만 동작한다.
+const KAKAO_KEY = "eddcdfcb6c5ae4b85f18cec5e60f48c8";
+const hasKakao = typeof Kakao !== "undefined";
+if (hasKakao && !Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+$("share").hidden = !hasKakao;
+$("share").onclick = () => {
+  const home = new URL(".", location.href).href;
+  const link = { mobileWebUrl: home, webUrl: home };
+  Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: `나의 결혼 준비 캐릭터는 ${result.name}`,
+      description: result.intro,
+      imageUrl: new URL(encodeURI(`서있는모습/${result.image}-${gender}.png`), location.href).href,
+      link,
+    },
+    buttons: [{ title: "나도 테스트하기", link }],
+  });
+};
 $("restart").onclick = () => { answers = []; show("start"); };

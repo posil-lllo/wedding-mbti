@@ -101,3 +101,5 @@ h2 { white-space: pre-line; font-size: 21px; line-height: 1.45; margin: 8px 0 28
 
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 a.choice { display: block; text-decoration: none; }
+.kakao { margin-bottom: 12px; background: #fee500; border-color: #fee500; color: #191919; font-weight: 600; }
+.kakao:hover, .kakao:focus-visible { background: #fdd800; border-color: #fdd800; }
