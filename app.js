@@ -84,7 +84,31 @@ function renderResult() {
   renderBars("value-bars", valuePercent, VALUE_NAMES);
   renderBars("style-bars", stylePercent, STYLE_NAMES);
   renderAnswers();
+  prepareStory(c);
   show("result");
+}
+
+// 휴대폰 공유 창은 누른 직후에만 열리므로 이미지를 결과 화면에서 미리 만들어 둔다.
+let storyFile = null;
+
+function prepareStory(c) {
+  storyFile = null;
+  $("story").hidden = true;
+  makeStoryFile(c, gender).then((file) => {
+    storyFile = file;
+    const canShare = navigator.canShare?.({ files: [file] }) ?? false;
+    $("story").textContent = canShare ? "인스타그램 스토리에 올리기" : "스토리용 이미지 저장하기";
+    $("story").hidden = false;
+  }).catch((e) => console.error("스토리 이미지 생성 실패", e));
+}
+
+function downloadStory() {
+  const url = URL.createObjectURL(storyFile);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = storyFile.name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function renderAnswers() {
@@ -150,6 +174,15 @@ $("share").onclick = () => {
       { title: "나도 테스트하기", link: { mobileWebUrl: home, webUrl: home } },
     ],
   });
+};
+$("story").onclick = async () => {
+  if (!storyFile) return;
+  if (!navigator.canShare?.({ files: [storyFile] })) return downloadStory();
+  try {
+    await navigator.share({ files: [storyFile] });
+  } catch (e) {
+    if (e.name !== "AbortError") downloadStory();
+  }
 };
 $("restart").onclick = () => { answers = []; clearSaved(); show("start"); };
 if (restore()) renderQuestion();
