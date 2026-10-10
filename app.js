@@ -97,7 +97,9 @@ function prepareStory(c) {
   makeStoryFile(c, gender).then((file) => {
     storyFile = file;
     const canShare = navigator.canShare?.({ files: [file] }) ?? false;
-    $("story").textContent = canShare ? "인스타그램 스토리에 올리기" : "스토리용 이미지 저장하기";
+    const label = canShare ? "인스타그램 스토리에 올리기" : "스토리용 이미지 저장하기";
+    $("story").ariaLabel = label;
+    $("story").title = label;
     $("story").hidden = false;
   }).catch((e) => console.error("스토리 이미지 생성 실패", e));
 }

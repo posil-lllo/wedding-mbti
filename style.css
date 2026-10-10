@@ -104,7 +104,16 @@ h2 { white-space: pre-line; font-size: 21px; line-height: 1.45; margin: 8px 0 28
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 a.choice { display: block; text-decoration: none; }
 .kakao { margin-bottom: 12px; background: #fee500; border-color: #fee500; color: #191919; font-weight: 600; }
-.story { margin-bottom: 12px; }
+.frame { position: relative; }
+.story {
+  position: absolute; right: 12px; bottom: 12px;
+  display: grid; place-items: center;
+  width: 48px; height: 48px; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: var(--card); color: var(--ink);
+  cursor: pointer; transition: background 0.15s, border-color 0.15s;
+}
+.story:hover, .story:focus-visible { background: var(--pink-soft); border-color: var(--pink); outline: none; }
 .kakao:hover, .kakao:focus-visible { background: #fdd800; border-color: #fdd800; }
 
 .answers summary { cursor: pointer; font-size: 15px; font-weight: 600; color: #d77a92; }

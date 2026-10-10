@@ -34,7 +34,12 @@
 
     <section id="result" class="screen" hidden>
       <p class="eyebrow">나의 결혼 준비 캐릭터는</p>
-      <div class="frame"><img id="char-img" alt=""></div>
+      <div class="frame">
+        <img id="char-img" alt="">
+        <button id="story" class="story" aria-label="인스타그램 스토리에 올리기" title="인스타그램 스토리에 올리기" hidden>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </button>
+      </div>
       <h1 id="char-name"></h1>
       <p id="char-sub" class="sub"></p>
       <p id="char-line" class="lead"></p>
@@ -54,7 +59,6 @@
         <ol id="answer-list"></ol>
       </details>
       <button id="share" class="choice kakao">카카오톡으로 공유하기</button>
-      <button id="story" class="choice story" hidden>인스타그램 스토리에 올리기</button>
       <div class="actions">
         <a class="choice" href="characters.html">다른 캐릭터 보러가기</a>
         <button id="restart" class="choice">다시 하기</button>
