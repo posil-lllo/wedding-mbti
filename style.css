@@ -105,3 +105,10 @@ h2 { white-space: pre-line; font-size: 21px; line-height: 1.45; margin: 8px 0 28
 a.choice { display: block; text-decoration: none; }
 .kakao { margin-bottom: 12px; background: #fee500; border-color: #fee500; color: #191919; font-weight: 600; }
 .kakao:hover, .kakao:focus-visible { background: #fdd800; border-color: #fdd800; }
+
+.answers summary { cursor: pointer; font-size: 15px; font-weight: 600; color: #d77a92; }
+.answers ol { margin: 16px 0 0; padding-left: 20px; }
+.answers li + li { margin-top: 14px; }
+.answers p { margin: 0; line-height: 1.6; }
+.answers .q { color: var(--muted); font-size: 14px; }
+.answers .a { font-weight: 600; }

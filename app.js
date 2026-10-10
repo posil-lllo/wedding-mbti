@@ -83,7 +83,24 @@ function renderResult() {
   $("char-desc").textContent = c.desc;
   renderBars("value-bars", valuePercent, VALUE_NAMES);
   renderBars("style-bars", stylePercent, STYLE_NAMES);
+  renderAnswers();
   show("result");
+}
+
+function renderAnswers() {
+  $("answer-list").replaceChildren(...answers.map((pick, i) => {
+    const { q, options } = QUESTIONS[i];
+    const item = document.createElement("li");
+    const question = document.createElement("p");
+    question.className = "q";
+    question.textContent = q.replaceAll("\n", " ");
+    const answer = document.createElement("p");
+    answer.className = "a";
+    answer.textContent = options[pick].text;
+    item.append(question, answer);
+    return item;
+  }));
+  $("answer-list").closest("details").open = false;
 }
 
 // 큰 비율부터 막대로 보여 준다.
