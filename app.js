@@ -35,8 +35,8 @@ function restore() {
   }
 }
 
-// 이전 질문으로 돌아갔을 때 그 질문에서 골랐던 보기
-let picked = null;
+// 이전 질문으로 돌아가며 잠시 빼 둔 답. 앞이 지금 질문의 답이다.
+let ahead = [];
 
 function renderQuestion() {
   save();
@@ -48,12 +48,14 @@ function renderQuestion() {
   $("question").textContent = q;
   $("options").replaceChildren(...options.map((o, n) => {
     const b = document.createElement("button");
-    b.className = n === picked ? "choice selected" : "choice";
+    b.className = n === ahead[0] ? "choice selected" : "choice";
     b.textContent = o.text;
-    b.onclick = () => { picked = null; answers.push(n); renderQuestion(); };
+    // 문항끼리는 독립이라 답을 바꿔도 뒤 질문 답은 그대로 둔다.
+    b.onclick = () => { ahead.shift(); answers.push(n); renderQuestion(); };
     return b;
   }));
   $("back").hidden = i === 0;
+  $("next").hidden = ahead.length === 0;
   show("quiz");
 }
 
@@ -151,9 +153,10 @@ function renderBars(id, percent, names) {
 }
 
 for (const b of document.querySelectorAll("[data-gender]")) {
-  b.onclick = () => { gender = b.dataset.gender; answers = []; renderQuestion(); };
+  b.onclick = () => { gender = b.dataset.gender; answers = []; ahead = []; renderQuestion(); };
 }
-$("back").onclick = () => { picked = answers.pop(); renderQuestion(); };
+$("back").onclick = () => { ahead.unshift(answers.pop()); renderQuestion(); };
+$("next").onclick = () => { answers.push(ahead.shift()); renderQuestion(); };
 // 카카오 JavaScript 키는 등록한 도메인에서만 동작한다.
 const KAKAO_KEY = "eddcdfcb6c5ae4b85f18cec5e60f48c8";
 const hasKakao = typeof Kakao !== "undefined";

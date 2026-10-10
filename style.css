@@ -64,6 +64,8 @@ h2 { white-space: pre-line; font-size: 21px; line-height: 1.45; margin: 8px 0 28
   cursor: pointer;
 }
 
+.nav { display: flex; justify-content: center; gap: 24px; }
+
 .progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
 #bar { height: 100%; width: 0; background: var(--pink); transition: width 0.2s; }
 
